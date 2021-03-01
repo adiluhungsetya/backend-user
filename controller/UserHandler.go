@@ -16,6 +16,9 @@ type UserHandler struct {
 func CreateUserHandler(r *gin.Engine, userService service.UserService)  {
 	userHandler := UserHandler{userService: userService}
 	r.GET("/user", userHandler.getAllUser)
+	r.GET("/user/:id", userHandler.getUserById)
+	r.POST("/user", userHandler.insertNewUser)
+	r.PUT("/user", userHandler.updateUser)
 }
 
 func (u UserHandler) getAllUser(c *gin.Context) {
