@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"strconv"
 	"user-go-test/model"
@@ -33,8 +34,11 @@ func (u UserHandler) insertNewUser(c *gin.Context)  {
 	var body model.User
 
 	err := c.Bind(&body)
+
 	if err != nil {
 		utils.HandleError(c, http.StatusBadGateway, err.Error())
+	} else {
+		log.Println(body)
 	}
 	if body.Name == "" || body.Ktp == "" {
 		utils.HandleError(c, http.StatusBadRequest, "There's empty field")
@@ -42,6 +46,7 @@ func (u UserHandler) insertNewUser(c *gin.Context)  {
 
 	user, err := u.userService.InsertNewUser(&body)
 	if err != nil {
+
 		utils.HandleError(c, http.StatusInternalServerError, "Server error")
 	}
 	utils.HandleSuccess(c, user)
@@ -53,10 +58,7 @@ func (u UserHandler) updateUser(c *gin.Context)  {
 	if err != nil {
 		utils.HandleError(c, http.StatusInternalServerError, err.Error())
 	}
-	body.Id, err= strconv.Atoi(c.Param("id"))
-	if err != nil {
-		utils.HandleError(c, http.StatusBadRequest, "Param must integer")
-	}
+
 	if body.Name == "" || body.Ktp == "" {
 		utils.HandleError(c, http.StatusBadRequest, "There's empty field")
 	}

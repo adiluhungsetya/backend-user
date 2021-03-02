@@ -1,12 +1,12 @@
 package model
 
 type User struct {
-	Id int `json:"id"`
-	Name string `json:"name"`
-	BirthDate string `json:"birth_date"`
-	Ktp string `json:"ktp"`
-	Job string `json:"job"`
- 	LastEducation string `json:"last_education"`
+	Id int `json:"id" gorm:"primaryKey unique not null"`
+	Name string `json:"name" gorm:"not null"`
+	BirthDate string `json:"birth_date" gorm:"not null"`
+	Ktp string `json:"ktp" gorm:"not null size:16 unique"`
+	Job string `json:"job" gorm:"not null"`
+ 	LastEducation string `json:"last_education" gorm:"not null"`
 }
 
 func (u User) TableName() string {
